@@ -23,16 +23,20 @@ class ShravanDetailScreen extends Component {
       name: '',
       age: null,
       gender: 'male',
+      contact: '',
       address: '',
-      details: '',
       skills: '',
       availableTime: '',
     };
   }
 
   handleSubmit = () => {
-    console.log(this.state);
-    Alert.alert('Your details have been submited. We will contact you shortly');
+    firebase
+      .database()
+      .ref(`${Date().slice(0, 15)}/${this.state.contact}`)
+      .set(this.state)
+      .then(() => Alert.alert('We will contact you shortly.'))
+      .catch(err => rej(err));
   };
 
   render() {
@@ -110,6 +114,16 @@ class ShravanDetailScreen extends Component {
               </View>
             </View>
             <View style={{marginTop: 32}}>
+              <Text style={styles.inputTitle}>Contact</Text>
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                keyboardType="number-pad"
+                onChangeText={contact => this.setState({contact})}
+                value={this.state.contact}
+              />
+            </View>
+            <View style={{marginTop: 32}}>
               <Text style={styles.inputTitle}>Address</Text>
               <TextInput
                 style={styles.input}
@@ -139,7 +153,7 @@ class ShravanDetailScreen extends Component {
           </View>
 
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, {marginBottom: 40}]}
             onPress={() => this.handleSubmit()}>
             {!this.state.authenticating && (
               <Text style={{color: '#fff', fontWeight: '600'}}>

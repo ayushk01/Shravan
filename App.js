@@ -4,12 +4,14 @@ import firebase from 'firebase';
 
 // Screens
 import LoadingScreen from './screens/LoadingScreen';
+import IntroScreen from './screens/IntroScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import AskScreen from './screens/AskScreen';
+import HireSliderScreen from './screens/HireSliderScreen';
+import ShravanSliderScreen from './screens/ShravanSliderScreen';
 import ShravanDetailScreen from './screens/ShravanDetailScreen';
-import CareTakerDetailScreen from './screens/CareTakerDetailScreen';
-import PayeeDetailScreen from './screens/PayeeDetailScreen';
+import UserDetailScreen from './screens/UserDetailScreen';
 import HomeScreen from './screens/HomeScreen';
 
 // Your web app's Firebase configuration
@@ -30,9 +32,10 @@ const AuthStack = createStackNavigator(
 const AskStack = createStackNavigator(
   {
     Ask: AskScreen,
+    HireSlider: HireSliderScreen,
+    ShravanSlider: ShravanSliderScreen,
     ShravanDetail: ShravanDetailScreen,
-    CareTakerDetail: CareTakerDetailScreen,
-    PayeeDetail: PayeeDetailScreen,
+    UserDetail: UserDetailScreen,
   },
   {
     headerMode: 'none',
@@ -51,13 +54,14 @@ const AppStack = createStackNavigator(
 export default createAppContainer(
   createSwitchNavigator(
     {
+      Intro: IntroScreen,
       Loading: LoadingScreen,
       Auth: AuthStack,
       Ask: AskStack,
       App: AppStack,
     },
     {
-      initialRouteName: 'Loading',
+      initialRouteName: 'Intro',
     },
   ),
 );

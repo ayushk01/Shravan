@@ -15,7 +15,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import firebase from 'firebase';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-class CareTakerDetailScreen extends Component {
+class UserDetailScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,12 +24,23 @@ class CareTakerDetailScreen extends Component {
       gender: 'male',
       address: '',
       details: '',
+      payeeName: '',
+      payeeAge: null,
+      payeeGender: 'male',
+      payeeContact: null,
+      payeeEmail: '',
+      payeeAddress: '',
+      billingAddress: '',
     };
   }
 
   handleSubmit = () => {
-    console.log(this.state);
-    this.props.navigation.navigate('PayeeDetail');
+    firebase
+      .database()
+      .ref(`${Date().slice(0, 15)}/${this.state.payeeContact}`)
+      .set(this.state)
+      .then(() => Alert.alert('We will contact you shortly.'))
+      .catch(err => rej(err));
   };
 
   render() {
@@ -124,13 +135,141 @@ class CareTakerDetailScreen extends Component {
                 value={this.state.details}
               />
             </View>
+
+            <Text style={styles.info}>Payee Details</Text>
+
+            <View style={{flexDirection: 'row', marginTop: 32}}>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  width: '65%',
+                  marginRight: 20,
+                }}>
+                <Text style={styles.inputTitle}>Full Name</Text>
+                <TextInput
+                  style={styles.input}
+                  autoCapitalize="none"
+                  onChangeText={payeeName => this.setState({payeeName})}
+                  value={this.state.payeeName}
+                />
+              </View>
+              <TouchableOpacity style={styles.avatar}>
+                <Entypo name="user" size={50} color="#fff"></Entypo>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{marginTop: 25, flexDirection: 'row'}}>
+              <View style={{width: '30%', marginRight: '20%'}}>
+                <Text style={styles.inputTitle}>Age</Text>
+                <TextInput
+                  style={styles.input}
+                  autoCapitalize="none"
+                  onChangeText={payeeAge => this.setState({payeeAge})}
+                  value={this.state.payeeAge}
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <View style={{width: '50%'}}>
+                <Text style={styles.inputTitle}>Gender</Text>
+                <Picker
+                  mode="dropdown"
+                  selectedValue={this.state.payeeGender}
+                  style={styles.input}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({payeeGender: itemValue})
+                  }>
+                  <Picker.Item label="Male" value="male" />
+                  <Picker.Item label="Female" value="female" />
+                  <Picker.Item label="Other" value="other" />
+                </Picker>
+              </View>
+            </View>
+
+            <View style={{marginTop: 32}}>
+              <Text style={styles.inputTitle}>Contact Number</Text>
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                onChangeText={payeeContact => this.setState({payeeContact})}
+                value={this.state.payeeContact}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={{marginTop: 32}}>
+              <Text style={styles.inputTitle}>Email</Text>
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                onChangeText={payeeEmail => this.setState({payeeEmail})}
+                value={this.state.payeeEmail}
+              />
+            </View>
+
+            <View style={{marginTop: 32}}>
+              <Text style={styles.inputTitle}>Relationship with Caretaker</Text>
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                onChangeText={() => {}}
+                value={this.state.pastShravan}
+              />
+            </View>
+
+            <Text style={styles.info}>Adress Details</Text>
+
+            <View style={{marginTop: 32, flexDirection: 'row'}}>
+              <View style={{width: '45%', marginRight: '10%'}}>
+                <Text style={styles.inputTitle}>City</Text>
+                <TextInput
+                  style={styles.input}
+                  autoCapitalize="none"
+                  onChangeText={() => {}}
+                />
+              </View>
+
+              <View style={{width: '45%'}}>
+                <Text style={styles.inputTitle}>State</Text>
+                <TextInput
+                  style={styles.input}
+                  autoCapitalize="none"
+                  onChangeText={() => {}}
+                />
+              </View>
+            </View>
+
+            <View style={{marginTop: 32}}>
+              <Text style={styles.inputTitle}>Country</Text>
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                onChangeText={() => {}}
+              />
+            </View>
+
+            <View style={{marginTop: 32}}>
+              <Text style={styles.inputTitle}>Billing Address</Text>
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                onChangeText={billingAddress => this.setState({billingAddress})}
+              />
+            </View>
           </View>
 
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.handleSubmit()}>
             {!this.state.authenticating && (
-              <Text style={{color: '#fff', fontWeight: '600'}}>Submit</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={{color: '#fff', fontWeight: '800', marginRight: 10}}>
+                  Submit
+                </Text>
+                <Entypo
+                  name="aircraft"
+                  style={{color: '#fff', fontSize: 20}}></Entypo>
+              </View>
             )}
             {this.state.authenticating && (
               <ActivityIndicator size="small" color="#fff" />
@@ -138,7 +277,7 @@ class CareTakerDetailScreen extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{alignSelf: 'center', marginTop: 52, marginBottom: 30}}
+            style={{alignSelf: 'center', marginTop: 32, marginBottom: 30}}
             onPress={() => this.props.navigation.navigate('App')}>
             <Text style={{fontSize: 13, fontWeight: '500', color: '#e9446a'}}>
               Ask Me Later
@@ -214,4 +353,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CareTakerDetailScreen;
+export default UserDetailScreen;

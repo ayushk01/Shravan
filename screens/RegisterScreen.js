@@ -32,6 +32,17 @@ class RegisterScreen extends Component {
     });
 
     firebase
+      .database()
+      .ref(`Users/${Date.now()}`)
+      .set({
+        created: Date().slice(0, 24),
+        displayName: this.state.name,
+        email: this.state.email,
+      })
+      .then(() => {})
+      .catch(err => rej(err));
+
+    firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(userCreditionals => {
@@ -126,7 +137,7 @@ class RegisterScreen extends Component {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={{alignSelf: 'center', marginTop: 32, marginBottom: 30}}
+          style={{alignSelf: 'center', marginTop: 40, marginBottom: 30}}
           onPress={() => this.props.navigation.navigate('Login')}>
           <Text style={{color: '#414959', fontSize: 13}}>
             Already have an account?{' '}
@@ -143,8 +154,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   skipButton: {
+    width: 55,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
     top: 10,
-    left: '88%',
+    left: '84%',
   },
   greeting: {
     marginTop: 34,
@@ -162,8 +177,8 @@ const styles = StyleSheet.create({
     height: 72,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 30,
-    marginTop: 78,
+    marginHorizontal: 24,
+    marginTop: 75,
   },
   form: {
     marginTop: 80,
@@ -195,7 +210,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 50,
     backgroundColor: '#e1e2e6',
-    marginTop: 28,
+    marginTop: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },

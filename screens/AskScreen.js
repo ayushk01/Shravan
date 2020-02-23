@@ -32,7 +32,7 @@ class HomeScreen extends React.Component {
           <View style={styles.buttonTray}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => this.props.navigation.navigate('ShravanDetail')}>
+              onPress={() => this.props.navigation.navigate('ShravanSlider')}>
               {!this.state.authenticating && (
                 <Text style={{color: '#fff', fontWeight: '600'}}>
                   Become a Shravan
@@ -44,7 +44,7 @@ class HomeScreen extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => this.props.navigation.navigate('CareTakerDetail')}>
+              onPress={() => this.props.navigation.navigate('HireSlider')}>
               {!this.state.authenticating && (
                 <Text style={{color: '#fff', fontWeight: '600'}}>
                   Hire a Shravan

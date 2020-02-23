@@ -7,10 +7,12 @@ import {
   ActivityIndicator,
   Image,
   StatusBar,
+  ScrollView,
   LayoutAnimation,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import firebase from 'firebase';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -38,20 +40,25 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <StatusBar
           barStyle="light-content"
           backgroundColor="#e9446a"></StatusBar>
 
         <Image
           source={require('../assets/authHeader.png')}
-          style={{marginTop: -116, marginLeft: -50}}></Image>
+          style={{position: 'absolute', top: -126, left: -50}}></Image>
 
-        <Image
-          source={require('../assets/authFooter.png')}
-          style={{position: 'absolute', bottom: -325, right: -225}}></Image>
+        <TouchableOpacity
+          style={styles.skipButton}
+          onPress={() => this.props.navigation.navigate('Ask')}>
+          <Text style={{color: '#e9446a'}}>Skip</Text>
+        </TouchableOpacity>
 
-        <Text style={styles.greeting}>{`Hi,\n Please Login to Continue`}</Text>
+        <View style={styles.greeting}>
+          <Text
+            style={styles.greetingText}>{`Hi,\nLogin to your Account`}</Text>
+        </View>
 
         <View style={styles.errorMessage}>
           {this.state.errorMessage && (
@@ -66,7 +73,8 @@ class LoginScreen extends React.Component {
               style={styles.input}
               autoCapitalize="none"
               onChangeText={email => this.setState({email})}
-              value={this.state.email}></TextInput>
+              value={this.state.email}
+            />
           </View>
 
           <View style={{marginTop: 32}}>
@@ -76,7 +84,8 @@ class LoginScreen extends React.Component {
               secureTextEntry
               autoCapitalize="none"
               onChangeText={password => this.setState({password})}
-              value={this.state.password}></TextInput>
+              value={this.state.password}
+            />
           </View>
         </View>
 
@@ -84,7 +93,7 @@ class LoginScreen extends React.Component {
           style={styles.button}
           onPress={() => this.handleLogin()}>
           {!this.state.authenticating && (
-            <Text style={{color: '#fff', fontWeight: '600'}}>Sign In</Text>
+            <Text style={{color: '#fff', fontWeight: '600'}}>Log In</Text>
           )}
           {this.state.authenticating && (
             <ActivityIndicator size="small" color="#fff" />
@@ -92,14 +101,14 @@ class LoginScreen extends React.Component {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={{alignSelf: 'center', marginTop: 32}}
+          style={{alignSelf: 'center', marginTop: 40, marginBottom: 30}}
           onPress={() => this.props.navigation.navigate('Register')}>
           <Text style={{color: '#414959', fontSize: 13}}>
-            New to Our App?{' '}
-            <Text style={{fontWeight: '600', color: '#e9446a'}}>Sign Up</Text>
+            Already have an account?{' '}
+            <Text style={{fontWeight: '500', color: '#e9446a'}}>Sign Up</Text>
           </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -108,8 +117,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  skipButton: {
+    width: 55,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 10,
+    left: '84%',
+  },
   greeting: {
-    marginTop: 32,
+    position: 'absolute',
+    top: 130,
+    alignItems: 'center',
+    width: '100%',
+  },
+  greetingText: {
     fontSize: 18,
     fontWeight: '400',
     textAlign: 'center',
@@ -125,6 +147,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 30,
+    marginTop: 140,
   },
   form: {
     marginBottom: 48,
